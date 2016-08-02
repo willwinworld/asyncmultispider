@@ -25,7 +25,7 @@ def save(url, html):
         if not filename == []:
             text = res['title'].replace('\\', '').replace('/', '').replace(':', '').replace('*', '') \
                 .replace('?', '').replace('"', '').replace('>', '').replace('<', '').replace('|', '')
-            with open('evo2/spp_%s_%s.json' % (filename[0], text), 'w') as f:
+            with open('evolution/spp_%s_%s.json' % (filename[0], text), 'w') as f:
                 f.write(standard_output)
 
 
@@ -162,18 +162,26 @@ def asy_run():
     return io_loop.run_sync(main)
 
 
+# def multi_run():
+#     print('Parent process %s' % os.getpid())
+#     drive = asy_run()
+#     p = multiprocessing.Pool()
+#     for i in range(11):
+#         pool = p(i)
+#         pool.apply_async(drive)
+#         pool.apply_async(record, args=(i, ))
+#     print('Waiting for all subprocesses done')
+#     p.close()
+#     p.join()
+#     print('All subprocess done')
+
+
 def multi_run():
-    print('Parent process %s' % os.getpid())
     drive = asy_run()
-    p = multiprocessing.Pool()
-    for i in range(11):
-        pool = p(i)
-        pool.apply_async(drive)
-        pool.apply_async(record, args=(i, ))
-    print('Waiting for all subprocesses done')
-    p.close()
-    p.join()
-    print('All subprocess done')
+    pool = multiprocessing.Pool(multiprocessing.cpu_count())
+    pool.apply_async(drive)
+    pool.close()
+    pool.join()
 
 
 if __name__ == '__main__':
