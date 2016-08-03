@@ -6,6 +6,8 @@ import os
 import json
 import time
 import multiprocessing
+from operator import is_not
+from functools import partial
 from datetime import timedelta
 from dateutil.parser import parse
 from pyquery import PyQuery as pq
@@ -102,7 +104,9 @@ def get_links(url, html):  # 获得页面的所有链接
     d = pq(html).make_links_absolute(base_url=url)
     key_node = d('body a')
     urls = set(d(node).attr('href') for node in key_node)
-    return urls
+    non_none = filter(partial(is_not, None), urls)
+    links = [url for url in non_none if url.startswith(base_url) and url.endswith('.shtml')]
+    return links
 
 
 @gen.coroutine
@@ -166,7 +170,7 @@ def asy_run():
 #     print('Parent process %s' % os.getpid())
 #     drive = asy_run()
 #     p = multiprocessing.Pool()
-#     for i in range(11):
+#     for i in range(6):
 #         pool = p(i)
 #         pool.apply_async(drive)
 #         pool.apply_async(record, args=(i, ))
