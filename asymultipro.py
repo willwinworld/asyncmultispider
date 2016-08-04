@@ -1,5 +1,6 @@
 #! python2
 # -*- coding:utf-8 -*-
+"""多进程异步爬虫完整版"""
 """on the foundation of async, add multiprocessing function"""
 import re
 import os
