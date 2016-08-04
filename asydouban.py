@@ -25,7 +25,8 @@ def parse(url, html):
     title = d('h1 span[property]').text()
     rate = d('.ll.rating_num').text()
     summary = d('#link-report span[property]').text()
-    res = {'url': url, 'title': title, 'rate': rate, 'summary': summary}
+    rank = d('.top250 .top250-no').text()
+    res = {'url': url, 'title': title, 'rate': rate, 'summary': summary, 'rank': rank}
     return res
 
 
